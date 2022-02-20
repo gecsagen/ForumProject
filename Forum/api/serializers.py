@@ -114,7 +114,7 @@ class MessageCreateSerializer(serializers.ModelSerializer):
         return value
 
 
-class MessageRelationSerializer(serializers.ModelSerial):
+class MessageRelationSerializer(serializers.ModelSerializer):
     """Сериализатор для модели MessageRelation"""
     class Meta:
         model = MessageRelation
