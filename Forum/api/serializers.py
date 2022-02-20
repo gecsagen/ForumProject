@@ -95,11 +95,15 @@ class ThemeRetrieveSerializer(serializers.ModelSerializer):
     """Сериализатор получения 1 темы на форуме"""
     category = CategorySerializer()
     messages = MessageSerializer(many=True, read_only=True)
+    messages_count = serializers.SerializerMethodField()
 
     class Meta:
         model = Theme
         fields = ['id', 'category', 'name',
-                  'status', 'user', 'messages', 'created_at']
+                  'status', 'user', 'messages', 'created_at', 'messages_count']
+
+    def get_messages_count(self, inctance):
+        return Message.objects.filter(theme=inctance).count()
 
 
 class MessageCreateSerializer(serializers.ModelSerializer):
