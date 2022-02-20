@@ -45,4 +45,7 @@ urlpatterns = [
          views.MessageCreate.as_view(), name='message-create'),
     path('messages/delete/<int:pk>/',
          views.MessageDelete.as_view(), name='message-delete'),
+    
+    #  urls для оценок
+    path('messages/like/<int:pk>/', views.MessageRelationView.as_view(), name='message-like'),
 ]

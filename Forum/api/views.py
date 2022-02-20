@@ -1,4 +1,4 @@
-from .models import Chapter, Category, Theme, Message
+from .models import Chapter, Category, Theme, Message, MessageRelation
 from . import serializers
 from rest_framework import generics
 from rest_framework import permissions
@@ -150,3 +150,9 @@ class MessageUpdate(generics.UpdateAPIView):
     queryset = Message.objects.all()
     serializer_class = serializers.MessageSerializer
     permission_classes = [IsOwnerOrStaff]
+
+class MessageRelationView(generics.UpdateAPIView):
+    """Реализация API для рейтинга"""
+    permission_classes = [permissions.IsAuthenticated]
+    queryset = MessageRelation.objects.all()
+    serializer_class = serializers.MessageRelationSerializer
