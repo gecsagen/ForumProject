@@ -199,6 +199,7 @@ class TestSerializers(TestCase):
             'user': self.user1.id,
             'theme': self.theme1.id,
             'content': 'Content 1',
+            'likes_count': 3,
             'created_at': data.get('created_at'),
             'updated_at': data.get('updated_at')
         }
