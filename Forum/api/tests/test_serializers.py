@@ -161,7 +161,7 @@ class TestSerializers(TestCase):
             'status': True,
             'user': self.user1.id,
             'messages': [1, 2, 3],
-            'created_at': data.get('created_at')
+            'created_at': data.get('created_at'),
         }
         self.assertEqual(expected_data, data)
 
@@ -187,7 +187,8 @@ class TestSerializers(TestCase):
             'status': True,
             'user': self.user1.id,
             'messages': serializers.MessageSerializer(Message.objects.all(), many=True).data,
-            'created_at': data.get('created_at')
+            'created_at': data.get('created_at'),
+            'messages_count': 3
         }
         self.assertEqual(expected_data, data)
 
