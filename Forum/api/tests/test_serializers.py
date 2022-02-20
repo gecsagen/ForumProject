@@ -5,7 +5,7 @@ TestSerializers - класс содержит тесты сериализато�
 
 from django.test import TestCase
 from django.contrib.auth.models import User
-from api.models import Category, Chapter, Theme, Message
+from api.models import Category, Chapter, Theme, Message, MessageRelation
 from api import serializers
 from django.contrib.auth.models import User
 from api import serializers
@@ -51,6 +51,14 @@ class TestSerializers(TestCase):
             user=self.user2, theme=self.theme1, content='Content 2')
         self.message3 = Message.objects.create(
             user=self.user3, theme=self.theme1, content='Content 3')
+
+        #  создаем тестовые оценки
+        self.grade1 = MessageRelation.objects.create(
+            user=self.user1, message=self.message1, like=True)
+        self.grade2 = MessageRelation.objects.create(
+            user=self.user2, message=self.message1, like=True)
+        self.grade3 = MessageRelation.objects.create(
+            user=self.user3, message=self.message1, like=True)
 
     def test_user_serializer(self):
         """Сереализация пользователя"""
@@ -193,5 +201,16 @@ class TestSerializers(TestCase):
             'content': 'Content 1',
             'created_at': data.get('created_at'),
             'updated_at': data.get('updated_at')
+        }
+        self.assertEqual(expected_data, data)
+
+    def test_message_relation_serializer(self):
+        """Сериализация оценки"""
+        data = serializers.MessageRelationSerializer(self.grade1).data
+        expected_data = {
+            'id': self.grade1.id,
+            'user': self.user1.id,
+            'message': self.message1.id,
+            'like': True
         }
         self.assertEqual(expected_data, data)
