@@ -70,3 +70,19 @@ class Message(models.Model):
         ordering = ['created_at']
         verbose_name = 'Сообщение'
         verbose_name_plural = 'Сообщения'
+
+
+class MessageRelation(models.Model):
+    """Модель оценок"""
+    user = models.ForeignKey(
+        User, on_delete=models.CASCADE, related_name='users', verbose_name='Пользователь')
+    message = models.ForeignKey(
+        Message, on_delete=models.CASCADE, verbose_name='Сообщение')
+    like = models.BooleanField(default=False, verbose_name='Лайк')
+
+    def __str__(self):
+        return f"{self.user.username}_{self.like}"
+
+    class Meta:
+        verbose_name = 'Relation'
+        verbose_name_plural = 'Relations'
