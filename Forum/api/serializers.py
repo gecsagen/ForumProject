@@ -1,3 +1,4 @@
+from email import message
 from rest_framework import serializers
 from .models import Chapter, Category, Theme, Message, MessageRelation
 from django.contrib.auth.models import User
@@ -79,10 +80,15 @@ class ThemeSerializerChange(serializers.ModelSerializer):
 
 class MessageSerializer(serializers.ModelSerializer):
     """Сериализатор сообщения на форуме"""
+    likes_count = serializers.SerializerMethodField()
 
     class Meta:
         model = Message
-        fields = ['id', 'user', 'theme', 'content', 'created_at', 'updated_at']
+        fields = ['id', 'user', 'theme', 'content',
+                  'created_at', 'updated_at', 'likes_count']
+
+    def get_likes_count(self, inctance):
+        return MessageRelation.objects.filter(message=inctance, like=True).count()
 
 
 class ThemeRetrieveSerializer(serializers.ModelSerializer):
