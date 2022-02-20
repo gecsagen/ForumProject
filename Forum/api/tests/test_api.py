@@ -8,6 +8,7 @@ MessageApiTestCase - класс с тестами api сообщений фор�
 AuthTokenTest - класс с тестами api авторизации и регистрации по токенам
 """
 from datetime import datetime
+from email import message
 import json
 from rest_framework.test import APITestCase
 from django.urls import reverse
@@ -59,6 +60,10 @@ class DateForTests(APITestCase):
             user=self.user2, theme=self.theme1, content='content 2')
         self.message3 = models.Message.objects.create(
             user=self.user1, theme=self.theme2, content='content 3')
+
+        #  создаем тестовый relation
+        self.relation1 = models.MessageRelation.objects.create(
+            user=self.user1, message=self.message1)
 
 
 class ChapterApiTestCase(DateForTests):
@@ -645,3 +650,26 @@ class AuthTokenTest(APITestCase):
         self.auth_token = response.data.get('auth_token', None)
         self.assertEqual(status.HTTP_200_OK, response.status_code)
         self.assertIsNotNone(response.data)
+
+
+class MessageRelationApiTestCase(DateForTests):
+    """Тестирование оценок (MessageRelation)"""
+
+    def setUp(self) -> None:
+        return super().setUp()
+
+    def test_like(self):
+        """Тестирование лайка"""
+        url = reverse('message-like', args=(self.message1.id,))
+        data = {
+            "like": True,
+        }
+        json_data = json.dumps(data)
+        self.client.force_login(self.user1)
+        response = self.client.patch(
+            url, data=json_data, content_type='application/json')
+        self.assertEqual(status.HTTP_200_OK, response.status_code)
+        relation = models.MessageRelation.objects.get(
+            user=self.user1, message=self.message1)
+
+        self.assertTrue(relation.like)
