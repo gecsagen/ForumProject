@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Chapter, Category, Theme, Message
+from .models import Chapter, Category, Theme, Message, MessageRelation
 from django.contrib.auth.models import User
 
 
@@ -112,3 +112,10 @@ class MessageCreateSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError(
                 "Невозможно создать сообщение в закрытой теме")
         return value
+
+
+class MessageRelationSerializer(serializers.ModelSerial):
+    """Сериализатор для модели MessageRelation"""
+    class Meta:
+        model = MessageRelation
+        fields = ['id', 'user', 'message', 'like']
