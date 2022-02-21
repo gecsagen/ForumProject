@@ -1,4 +1,3 @@
-from email import message
 from rest_framework import serializers
 from .models import Chapter, Category, Theme, Message, MessageRelation
 from django.contrib.auth.models import User

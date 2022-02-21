@@ -8,7 +8,6 @@ MessageApiTestCase - класс с тестами api сообщений фор�
 AuthTokenTest - класс с тестами api авторизации и регистрации по токенам
 """
 from datetime import datetime
-from email import message
 import json
 from rest_framework.test import APITestCase
 from django.urls import reverse
